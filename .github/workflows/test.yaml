@@ -1,0 +1,16 @@
+name: validate commit
+on: [pull_request]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019]
+        go-ver: [1.17.6]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-ver }}
+      - run: go test ./...
+      - run: go build .

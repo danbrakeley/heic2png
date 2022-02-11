@@ -1,0 +1,25 @@
+name: build release zip
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release:
+    name: Release Go Binary
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.22
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: windows
+          goarch: amd64
+          goversion: "1.17.6"
+          project_path: "."
+          extra_files: LICENSE.txt README.md
+          ldflags:
+            '-X "github.com/danbrakeley/heic2png/main.Version=${{ github.event.release.tag_name }}"
+            -X "github.com/danbrakeley/heic2png/main.BuildTime=${{ github.event.release.created_at
+            }}" -X "github.com/danbrakeley/heic2png/main.ReleaseURL=${{
+            github.event.release.html_url }}"'

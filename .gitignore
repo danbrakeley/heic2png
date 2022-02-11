@@ -1,0 +1,4 @@
+*.[Dd][Ss]_[Ss]tore
+output/
+*.ignore
+*.local.json
