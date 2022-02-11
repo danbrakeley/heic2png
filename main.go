@@ -12,18 +12,15 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/adrium/goheif"
 	"github.com/danbrakeley/frog"
-	"github.com/jdeng/goheif"
 )
 
-// -ldflags '-X "github.com/danbrakeley/heic2png/main.Version=${{ github.event.release.tag_name }}"'
-var Version string
+// (go tool nm) -ldflags '-X "main.Version=${{version}}"'
+var Version string = "unknown"
 
-// -ldflags '-X "github.com/danbrakeley/heic2png/main.BuildTime=${{ github.event.release.created_at }}"'
-var BuildTime string
-
-// -ldflags '-X "github.com/danbrakeley/heic2png/main.ReleaseURL=${{ github.event.release.html_url }}"'
-var ReleaseURL string
+// (go tool nm) -ldflags '-X "main.BuildTimestamp=${{date -u +"%Y-%m-%dT%H:%M:%SZ"}}"'
+var BuildTimestamp string = "unknown"
 
 func main() {
 	// this one line main() ensures os.Exit is only called after all defers have run
@@ -55,10 +52,7 @@ func main_() int {
 
 	// print version info and exit
 	if version {
-		fmt.Printf(`heic2png %s
-  built on: %s
-  release url: %s
-		`, Version, BuildTime, ReleaseURL)
+		fmt.Printf("Version: %s\nBuilt On: %s\n", Version, BuildTimestamp)
 		return 0
 	}
 
@@ -91,12 +85,14 @@ func main_() int {
 		}
 		filelist = make([]string, 0, len(files))
 		for _, v := range files {
-			if !v.IsDir() {
-				name := v.Name()
-				if strings.HasSuffix(strings.ToLower(path.Ext(name)), ".heic") {
-					filelist = append(filelist, v.Name())
-				}
+			if v.IsDir() {
+				continue
 			}
+			name := v.Name()
+			if !strings.HasSuffix(strings.ToLower(path.Ext(name)), ".heic") {
+				continue
+			}
+			filelist = append(filelist, v.Name())
 		}
 	}
 
@@ -115,7 +111,7 @@ func main_() int {
 	var numErrs int32
 
 	// spin up workers
-	log.Info("starting workers", frog.Int("count", numWorkers))
+	log.Info("starting", frog.Int("num_workers", numWorkers), frog.String("version", Version), frog.String("built_on", BuildTimestamp))
 	wg.Add(numWorkers)
 	for i := 0; i < numWorkers; i++ {
 		go func(thread int) {

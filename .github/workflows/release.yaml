@@ -1,25 +1,32 @@
-name: build release zip
-
+name: Make Windows Release From Tag
 on:
-  release:
-    types: [created]
-
+  push:
+    tags:
+      - "v*.*.*"
 jobs:
   release:
-    name: Release Go Binary
-    runs-on: ubuntu-20.04
+    name: Windows Release
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: wangyoucao577/go-release-action@v1.22
+      - uses: egor-tensin/setup-mingw@v2
+      - uses: actions/setup-go@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: windows
-          goarch: amd64
-          goversion: "1.17.6"
-          project_path: "."
-          extra_files: LICENSE.txt README.md
-          ldflags:
-            '-X "github.com/danbrakeley/heic2png/main.Version=${{ github.event.release.tag_name }}"
-            -X "github.com/danbrakeley/heic2png/main.BuildTime=${{ github.event.release.created_at
-            }}" -X "github.com/danbrakeley/heic2png/main.ReleaseURL=${{
-            github.event.release.html_url }}"'
+          go-version: "1.17.7"
+      - run: ./build.sh
+        shell: bash
+      - run: cp LICENSE.txt output/
+        shell: bash
+      - run: cp README.md output/
+        shell: bash
+      - uses: thedoctor0/zip-release@master
+        with:
+          type: "zip"
+          directory: "output"
+          filename: "../heic2png.zip"
+      - uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: true
+          files: "heic2png.zip"
+          generate_release_notes: true

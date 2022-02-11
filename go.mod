@@ -3,8 +3,8 @@ module github.com/danbrakeley/heic2png
 go 1.17
 
 require (
+	github.com/adrium/goheif v0.0.0-20210309200126-b184a7b446fa
 	github.com/danbrakeley/frog v0.7.4
-	github.com/jdeng/goheif v0.0.0-20200323230657-a0d6a8b3e68f
 )
 
 require (
