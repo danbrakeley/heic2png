@@ -19,6 +19,6 @@ else
 fi
 
 echo Building...
-go build -ldflags="-X \"main.Version=$TAG_VERSION\" -X \"main.BuildTimestamp=$START_TIMESTAMP\"" -o ./output/heic2png.exe .
+go build -ldflags="-X \"main.Version=$TAG_VERSION\" -X \"main.BuildTimestamp=$START_TIMESTAMP\"" -o ./output/ .
 
 echo Done

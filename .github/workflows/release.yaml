@@ -1,4 +1,4 @@
-name: Make Windows Release From Tag
+name: Make Windows Release From Pushed Version Tag
 on:
   push:
     tags:
@@ -12,7 +12,7 @@ jobs:
       - uses: egor-tensin/setup-mingw@v2
       - uses: actions/setup-go@v2
         with:
-          go-version: "1.17.7"
+          go-version: 1.17.7
       - run: ./build.sh
         shell: bash
       - run: cp LICENSE.txt output/
@@ -21,12 +21,12 @@ jobs:
         shell: bash
       - uses: thedoctor0/zip-release@master
         with:
-          type: "zip"
-          directory: "output"
-          filename: "../heic2png.zip"
+          type: zip
+          directory: output
+          filename: ../heic2png.zip
       - uses: softprops/action-gh-release@v1
         with:
           draft: false
           prerelease: true
-          files: "heic2png.zip"
+          files: heic2png.zip
           generate_release_notes: true
