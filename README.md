@@ -1,14 +1,16 @@
 # heic2png
 
-`heic2png` losslessly transcodes heic images png. It includes options to automatically batch all the .heic files it finds in a folder, and can spread the work across all available CPU cores. Currently, it only outputs png, and only with minimal compression to keep it fast. Note that this may result in relatively large png files, which is preferrable to spending a bunch of time trying to compress image data that likely won't compress very well anyway.
+`heic2png` is a cli app that losslessly transcodes heic images to png.
+
+It includes options to automatically batch all the `.heic` files it finds in a folder, and can spread the work across all available CPU cores. Currently, it only outputs png, and only with minimal compression to keep it fast. Note that this may result in relatively large png files (which, imo, is preferrable to spending a bunch of time trying to compress image data that likely won't compress very well anyway).
 
 ## Install
 
-Grab the latest zip with the exe off the Releases page, then extract it into a folder in your path.
+[Download the latest release](https://github.com/danbrakeley/heic2png/releases), and then put the exe somewhere in your path.
 
 ## Usage
 
-This is a command line app, so open your favorite Windows shell/terminal/console, and pass `-h` or `--help` to see all the options available. As of v0.2.0, your output should look something like this:
+Run `heic2png -h` to see all the flags and arguments. As of v0.2.0, your output should look something like this:
 
 ```text
 $ heic2png -h
