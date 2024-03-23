@@ -8,11 +8,10 @@ jobs:
     name: Windows Release
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: egor-tensin/setup-mingw@v2
-      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
         with:
-          go-version: 1.17.7
+          go-version: '1.22.x'
       - run: ./build.sh
         shell: bash
       - run: cp LICENSE.txt output/
@@ -24,7 +23,7 @@ jobs:
           type: zip
           directory: output
           filename: ../heic2png.zip
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           draft: false
           prerelease: true
