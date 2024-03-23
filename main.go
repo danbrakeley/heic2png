@@ -69,7 +69,7 @@ func main_() int {
 		return -1
 	}
 
-	log := frog.New(frog.Auto, frog.FieldIndent30)
+	log := frog.New(frog.Auto, frog.POFieldIndent(30))
 	defer log.Close()
 
 	// build list of files
@@ -201,7 +201,7 @@ func convertHeicToPng(filenameIn, filenameOut string, forceOverwrite bool, fnPro
 	if forceOverwrite {
 		fOut, err = os.Create(filenameOut)
 	} else {
-		fOut, err = os.OpenFile(filenameOut, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0666)
+		fOut, err = os.OpenFile(filenameOut, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0o666)
 	}
 	if err != nil {
 		return fmt.Errorf("unable to create %s: %v", filenameOut, err)
