@@ -9,10 +9,16 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
-          go-version: '1.22.x'
+          go-version-file: 'go.mod'
       - run: ./build.sh
+        shell: bash
+      - run: cp /c/mingw64/bin/libgcc_s_seh-1.dll output/
+        shell: bash
+      - run: cp /c/mingw64/bin/libstdc++-6.dll output/
+        shell: bash
+      - run: cp /c/mingw64/bin/libwinpthread-1.dll output/
         shell: bash
       - run: cp LICENSE.txt output/
         shell: bash

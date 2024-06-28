@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"image/png"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -85,9 +84,9 @@ func main_() int {
 			log.Error("os.Getwd() had error", frog.Err(err))
 			return -1
 		}
-		files, err := ioutil.ReadDir(cwd)
+		files, err := os.ReadDir(cwd)
 		if err != nil {
-			log.Error("ioutil.ReadDir(cwd) had error", frog.String("cwd", cwd), frog.Err(err))
+			log.Error("os.ReadDir(cwd) had error", frog.String("cwd", cwd), frog.Err(err))
 			return -1
 		}
 		filelist = make([]string, 0, len(files))
